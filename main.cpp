@@ -9,7 +9,7 @@ int main()
 
 	std::cout << test << std::endl;
 
-	//std::thread antidbg_thread(app::antidbg_loop);
+	std::thread antidbg_thread(app::antidbg_loop);
 	//app::checksum_loop();
 	std::thread login_thread(app::login_loop);
 	std::thread menu_render_thread(app::render_menu);

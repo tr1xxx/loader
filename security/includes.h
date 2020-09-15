@@ -16,7 +16,6 @@
 #include <VMProtectSDK.h>
 #define main_function "main"
 #define checksum_function "checksum"
-#define debug_function "antidebug"
 #define menu_function "menu"
 #define login_function "login"
 #define menu_A "menuA"

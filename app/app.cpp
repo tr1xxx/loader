@@ -123,9 +123,8 @@ namespace app {
 
 	auto antidbg_loop()->void {
 
-		VMProtectBeginUltra(debug_function);
-
 		while (true) {
+
 			// -------------------------------------------------------------------
 			// -- Memory Checks --------------------------------------------------
 			// -------------------------------------------------------------------
@@ -162,8 +161,6 @@ namespace app {
 
 			std::this_thread::sleep_for(2s);
 		}
-
-		VMProtectEnd();
 
 	}
 
