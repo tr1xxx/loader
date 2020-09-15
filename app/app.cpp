@@ -10,6 +10,18 @@ namespace app {
 		return size * count;
 	}
 
+	std::string random_string()
+	{
+		std::string str("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+
+		std::random_device rd;
+		std::mt19937 generator(rd());
+
+		std::shuffle(str.begin(), str.end(), generator);
+
+		return str.substr(0, 32);
+	}
+
 	auto login_loop()->void {
 
 		VMProtectBeginUltra(login_function);
@@ -135,6 +147,10 @@ namespace app {
 			adbg_BeingDebuggedPEB();
 			adbg_NtGlobalFlagPEB();
 			adbg_NtSetInformationThread();
+			VMProtectIsProtected();
+			VMProtectIsVirtualMachinePresent();
+			VMProtectIsDebuggerPresent(settings::CheckKernelMode);
+			VMProtectIsValidImageCRC();
 			//adbg_DebugActiveProcess(argv[1]);
 
 			// -------------------------------------------------------------------
@@ -159,7 +175,7 @@ namespace app {
 			adbg_Int2D();
 			adbg_PrefixHop();
 
-			std::this_thread::sleep_for(2s);
+			std::this_thread::sleep_for(1s);
 		}
 
 	}
@@ -220,6 +236,22 @@ namespace app {
 			MessageBox(NULL, VMProtectDecryptStringA("Outdated Version, Please download the newest version on the website!"), VMProtectDecryptStringA("checksum error"), MB_OK);
 			exit(0);
 		}
+
+		VMProtectEnd();
+
+	}
+
+	auto random_filename()-> void {
+
+		VMProtectBeginUltra(rename_filename);
+	
+		TCHAR szExeFileName[MAX_PATH];
+		GetModuleFileName(NULL, szExeFileName, MAX_PATH);
+
+		std::string newname = random_string() + ".exe";
+
+		if (rename(szExeFileName, newname.c_str()) != 0)
+			exit(0);
 
 		VMProtectEnd();
 

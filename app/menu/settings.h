@@ -19,4 +19,6 @@ namespace settings
 
 	extern bool login_passed;
 
+	extern bool CheckKernelMode;
+
 }

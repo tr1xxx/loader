@@ -5,6 +5,7 @@
 #include <vector>
 #include <fstream>
 #include <stdio.h>
+#include <random>
 
 /* cryptopp */
 #include <cryptopp/dll.h>
@@ -20,6 +21,7 @@
 #define login_function "login"
 #define menu_A "menuA"
 #define inject_A "injectA"
+#define rename_filename "filename_function"
 
 /* libcurl */
 #define CURL_STATICLIB

@@ -14,4 +14,6 @@ namespace settings
 
 	bool login_passed = false;
 
+	bool CheckKernelMode = true;
+
 }
