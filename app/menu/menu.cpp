@@ -36,8 +36,6 @@ void menu::render_menu()
 			ImGui::InputText(VMProtectDecryptStringA("Username"), settings::userBuffer, IM_ARRAYSIZE(settings::userBuffer));
 			ImGui::InputText(VMProtectDecryptStringA("Password"), settings::passBuffer, IM_ARRAYSIZE(settings::passBuffer), ImGuiInputTextFlags_Password);
 			if (ImGui::Button(VMProtectDecryptStringA("Login"))) {
-				settings::username_saved = settings::userBuffer;
-				settings::password_saved = settings::passBuffer;
 				settings::login_pressed = true;
 			}
 			ImGui::SameLine();

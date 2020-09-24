@@ -9,6 +9,8 @@
 
 #pragma once
 
+#define NOMINMAX
+#define _WINSOCKAPI_
 #include <Windows.h>
 
 IMGUI_IMPL_API bool     ImGui_ImplWin32_Init(void* hwnd);

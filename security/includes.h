@@ -23,11 +23,9 @@
 #define inject_A "injectA"
 #define rename_filename "filename_function"
 
-/* libcurl */
-#define CURL_STATICLIB
-#include <curl/curl.h>
-
 /* Windows */
+#define NOMINMAX
+#define _WINSOCKAPI_
 #include <Windows.h>
 #include <Winternl.h>
 
@@ -36,7 +34,6 @@
 
 /* Project includes */
 #include "hardware.h"
-#include "antidbg/antidbg.h"
 #include "../app/app.h"
 #include "../app/json/json.hpp"
 #include "../app/menu/menu.h"

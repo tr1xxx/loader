@@ -2,7 +2,7 @@
 
 namespace hardware {
 
-	static const char* cpuId(void)
+	/*static const char* cpuId(void)
 	{
 		unsigned long s1 = 0;
 		unsigned long s2 = 0;
@@ -29,7 +29,7 @@ namespace hardware {
 		static char buf[100];
 		sprintf_s(buf, "%08X%08X%08X%08X", s1, s2, s3, s4);
 		return buf;
-	}
+	}*/
 
 	std::string GetMachineGUID()
 	{
@@ -47,7 +47,7 @@ namespace hardware {
 		return ret;
 	}
 
-	std::string cpu_ID = cpuId();
+	//std::string cpu_ID = cpuId();
 	std::string guid = GetMachineGUID();
 
 }

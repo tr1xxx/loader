@@ -1,4 +1,5 @@
 #include "app.h"
+#include "http/http.hpp"
 
 using json = nlohmann::json;
 using namespace std::chrono_literals;
@@ -30,41 +31,25 @@ namespace app {
 
 			if (settings::login_pressed) {
 
-				int length_user = sprintf(settings::userBuffer, "%s", settings::userBuffer);
-				int length_pass = sprintf(settings::passBuffer, "%s", settings::passBuffer);
+				http::Response response;
 
-				char request[512];
-				std::string response;
+				try
+				{
 
-				CURL* curl;
-				CURLcode res;
-
-				curl_global_init(CURL_GLOBAL_ALL);
-
-				curl = curl_easy_init();
-
-				if (curl) {
-
-					sprintf(request, VMProtectDecryptStringA("username=%s&password=%s&hwid=%s"), curl_easy_escape(curl, settings::userBuffer, length_user), curl_easy_escape(curl, settings::passBuffer, length_pass), hardware::guid);
-
-					curl_easy_setopt(curl, CURLOPT_URL, VMProtectDecryptStringA("http://localhost/loader/check.php"));
-					curl_easy_setopt(curl, CURLOPT_POSTFIELDS, VMProtectDecryptStringA(request));
-
-					curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_to_string);
-					curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
-
-					res = curl_easy_perform(curl);
-
-					if (res != CURLE_OK)
-						fprintf(stderr, VMProtectDecryptStringA("curl_easy_perform() failed: %s\n"),
-							curl_easy_strerror(res));
-
-					curl_easy_cleanup(curl);
+					http::Request request(VMProtectDecryptStringA("http://localhost/loader/check.php"));
+					// pass parameters as a map
+					std::map<std::string, std::string> parameters = { {VMProtectDecryptStringA("username"), VMProtectDecryptStringA(settings::userBuffer)}, {VMProtectDecryptStringA("password"), VMProtectDecryptStringA(settings::passBuffer)}, {VMProtectDecryptStringA("hwid"), VMProtectDecryptStringA(hardware::guid.c_str())} };
+					response = request.send("POST", parameters, {
+						"Content-Type: application/x-www-form-urlencoded"
+						});
 
 				}
-				curl_global_cleanup();
+				catch (const std::exception& e)
+				{
+					std::cerr << "Request failed, error: " << e.what() << '\n';
+				}
 
-				json j = json::parse(response);
+				json j = json::parse(response.body.begin(), response.body.end());
 
 				std::cout << j << std::endl;
 
@@ -90,13 +75,10 @@ namespace app {
 					exit(0);
 				}
 
-
 			}
 
-		} while (settings::login_passed == false);
-
+		} while (!settings::login_passed);
 		VMProtectEnd();
-
 	}
 
 	auto render_menu()->void {
@@ -137,43 +119,10 @@ namespace app {
 
 		while (true) {
 
-			// -------------------------------------------------------------------
-			// -- Memory Checks --------------------------------------------------
-			// -------------------------------------------------------------------
-			adbg_IsDebuggerPresent();
-			adbg_CheckRemoteDebuggerPresent();
-			adbg_CheckWindowName();
-			adbg_NtQueryInformationProcess();
-			adbg_BeingDebuggedPEB();
-			adbg_NtGlobalFlagPEB();
-			adbg_NtSetInformationThread();
 			VMProtectIsProtected();
 			VMProtectIsVirtualMachinePresent();
 			VMProtectIsDebuggerPresent(settings::CheckKernelMode);
 			VMProtectIsValidImageCRC();
-			//adbg_DebugActiveProcess(argv[1]);
-
-			// -------------------------------------------------------------------
-			// -- CPU Checks -----------------------------------------------------
-			// -------------------------------------------------------------------
-			adbg_HardwareDebugRegisters();
-			adbg_MovSS();
-
-			// -------------------------------------------------------------------
-			// -- Timing Checks --------------------------------------------------
-			// -------------------------------------------------------------------
-			adbg_RDTSC();
-			adbg_QueryPerformanceCounter();
-			adbg_GetTickCount();
-
-			// -------------------------------------------------------------------
-			// -- Exception Checks -----------------------------------------------
-			// -------------------------------------------------------------------
-			adbg_CloseHandleException();
-			adbg_SingleStepException();
-			adbg_Int3();
-			adbg_Int2D();
-			adbg_PrefixHop();
 
 			std::this_thread::sleep_for(1s);
 		}
@@ -197,38 +146,25 @@ namespace app {
 				sha512, new CryptoPP::HexEncoder(new CryptoPP::ArraySink(buf, size))));
 		std::string strHash = std::string(reinterpret_cast<const char*>(buf), size);
 
-		char request[512];
-		std::string response;
+		http::Response response;
 
-		CURL* curl;
-		CURLcode res;
+		try
+		{
 
-		curl_global_init(CURL_GLOBAL_ALL);
-
-		curl = curl_easy_init();
-
-		if (curl) {
-
-			sprintf(request, VMProtectDecryptStringA("hash=%s"), strHash);
-
-			curl_easy_setopt(curl, CURLOPT_URL, VMProtectDecryptStringA("http://localhost/loader/checksum.php"));
-			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, VMProtectDecryptStringA(request));
-
-			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_to_string);
-			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
-
-			res = curl_easy_perform(curl);
-
-			if (res != CURLE_OK)
-				fprintf(stderr, VMProtectDecryptStringA("curl_easy_perform() failed: %s\n"),
-					curl_easy_strerror(res));
-
-			curl_easy_cleanup(curl);
+			http::Request request(VMProtectDecryptStringA("http://localhost/loader/checksum.php"));
+			// pass parameters as a map
+			std::map<std::string, std::string> parameters = { {VMProtectDecryptStringA("hash"), VMProtectDecryptStringA(strHash.c_str())} };
+			response = request.send("POST", parameters, {
+				"Content-Type: application/x-www-form-urlencoded"
+				});
 
 		}
-		curl_global_cleanup();
+		catch (const std::exception& e)
+		{
+			std::cerr << "Request failed, error: " << e.what() << '\n';
+		}
 
-		json j = json::parse(response);
+		json j = json::parse(response.body.begin(), response.body.end());
 
 		std::cout << j << std::endl;
 

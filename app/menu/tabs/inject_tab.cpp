@@ -20,6 +20,8 @@ void menu::inject_tab() {
 		ImGui::BeginChild(VMProtectDecryptStringA("Child"), ImVec2(574, 394 - 39 - 4));
 		{
 
+			ImGui::Button("inject");
+				
 
 
 		}

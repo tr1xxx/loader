@@ -1,4 +1,6 @@
 #pragma once
+#define NOMINMAX
+#define _WINSOCKAPI_
 #include <Windows.h>
 #include <TlHelp32.h>
 #include <stdint.h>
