@@ -1,5 +1,5 @@
 #include "app.h"
-#include "http/http.hpp"
+#include "../app/http/http.hpp"
 
 using json = nlohmann::json;
 using namespace std::chrono_literals;
@@ -58,10 +58,12 @@ namespace app {
 					MessageBox(NULL, VMProtectDecryptStringA("successful!"), VMProtectDecryptStringA("login"), MB_OK);
 
 					if (j[VMProtectDecryptStringA("hwid")] == true) {
+						app::load_driver();
 						settings::login_passed = true;
 					}
 					else if (j[VMProtectDecryptStringA("new_hwid")] == true) {
 						MessageBox(NULL, VMProtectDecryptStringA("hwid set!"), VMProtectDecryptStringA("login"), MB_OK);
+						app::load_driver();
 						settings::login_passed = true;
 					}
 					else if (j[VMProtectDecryptStringA("hwid")] == false && j[VMProtectDecryptStringA("new_hwid")] == false) {
@@ -180,7 +182,7 @@ namespace app {
 	auto random_filename()-> void {
 
 		VMProtectBeginUltra(rename_filename);
-	
+
 		TCHAR szExeFileName[MAX_PATH];
 		GetModuleFileName(NULL, szExeFileName, MAX_PATH);
 
@@ -191,6 +193,39 @@ namespace app {
 
 		VMProtectEnd();
 
+	}
+
+	auto load_driver()-> int {
+
+		VMProtectBeginUltra(inject_protect);
+
+		const std::string driver_path = "C:\\Users\\Trix\\Desktop\\Rust Build\\kernelmode.sys";
+
+		if (!std::filesystem::exists(driver_path))
+		{
+			std::cout << "[-] File " << driver_path << " doesn't exist" << std::endl;
+			return -1;
+		}
+
+		HANDLE iqvw64e_device_handle = intel_driver::Load();
+
+		if (!iqvw64e_device_handle || iqvw64e_device_handle == INVALID_HANDLE_VALUE)
+		{
+			std::cout << "[-] Failed to load driver iqvw64e.sys" << std::endl;
+			return -1;
+		}
+
+		if (!kdmapper::MapDriver(iqvw64e_device_handle, driver_path))
+		{
+			std::cout << "[-] Failed to map " << driver_path << std::endl;
+			intel_driver::Unload(iqvw64e_device_handle);
+			return -1;
+		}
+
+		intel_driver::Unload(iqvw64e_device_handle);
+		std::cout << "[+] success" << std::endl;
+
+		VMProtectEnd();
 	}
 
 }

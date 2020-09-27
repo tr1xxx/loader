@@ -1,9 +1,9 @@
 #pragma once
 
 /* normal includes */
+#include <fstream>
 #include <iostream>
 #include <vector>
-#include <fstream>
 #include <stdio.h>
 #include <random>
 
@@ -19,9 +19,13 @@
 #define checksum_function "checksum"
 #define menu_function "menu"
 #define login_function "login"
-#define menu_A "menuA"
-#define inject_A "injectA"
+#define menu_gui "menuGUI"
+#define inject_menu "injectMenu"
 #define rename_filename "filename_function"
+#define inject_protect "inject"
+
+/* Driver Mapper Include */
+#include "../kdmapper/kdmapper.hpp"
 
 /* Windows */
 #define NOMINMAX

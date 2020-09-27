@@ -11,5 +11,6 @@ namespace app {
 	auto antidbg_loop()-> void;
 	auto checksum_loop()-> void;
 	auto random_filename()-> void;
+	auto load_driver()-> int;
 
 }

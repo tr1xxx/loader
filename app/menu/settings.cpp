@@ -9,6 +9,8 @@ namespace settings
 	bool login_pressed = false;
 	bool exit_pressed = false;
 
+	bool load_driver = false;
+
 	bool login_passed = false;
 
 	bool CheckKernelMode = true;

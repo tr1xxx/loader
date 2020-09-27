@@ -14,6 +14,8 @@ namespace settings
 	extern bool login_pressed;
 	extern bool exit_pressed;
 
+	extern bool load_driver;
+
 	extern bool login_passed;
 
 	extern bool CheckKernelMode;
