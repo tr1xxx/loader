@@ -1,7 +1,5 @@
 #include "app.h"
-#include "../app/http/http.hpp"
 
-using json = nlohmann::json;
 using namespace std::chrono_literals;
 
 namespace app {
@@ -25,67 +23,33 @@ namespace app {
 
 	auto login_loop()->void {
 
-		VMProtectBeginUltra(login_function);
+		VMProtectBeginUltra("login_loop");
 
 		do {
 
 			if (settings::login_pressed) {
 
-				http::Response response;
+				try {
 
-				try
-				{
+					std::unique_ptr<Login_WebRequest> res{ new Login_WebRequest(settings::userBuffer, settings::passBuffer, hardware::guid) };
 
-					http::Request request(VMProtectDecryptStringA("http://localhost/loader/check.php"));
-					// pass parameters as a map
-					std::map<std::string, std::string> parameters = { {VMProtectDecryptStringA("username"), VMProtectDecryptStringA(settings::userBuffer)}, {VMProtectDecryptStringA("password"), VMProtectDecryptStringA(settings::passBuffer)}, {VMProtectDecryptStringA("hwid"), VMProtectDecryptStringA(hardware::guid.c_str())} };
-					response = request.send("POST", parameters, {
-						"Content-Type: application/x-www-form-urlencoded"
-						});
+					res->login();
 
 				}
-				catch (const std::exception& e)
-				{
-					std::cerr << "Request failed, error: " << e.what() << '\n';
-				}
-
-				json j = json::parse(response.body.begin(), response.body.end());
-
-				std::cout << j << std::endl;
-
-				if (j[VMProtectDecryptStringA("success")] == true) {
-
-					MessageBox(NULL, VMProtectDecryptStringA("successful!"), VMProtectDecryptStringA("login"), MB_OK);
-
-					if (j[VMProtectDecryptStringA("hwid")] == true) {
-						app::load_driver();
-						settings::login_passed = true;
-					}
-					else if (j[VMProtectDecryptStringA("new_hwid")] == true) {
-						MessageBox(NULL, VMProtectDecryptStringA("hwid set!"), VMProtectDecryptStringA("login"), MB_OK);
-						app::load_driver();
-						settings::login_passed = true;
-					}
-					else if (j[VMProtectDecryptStringA("hwid")] == false && j[VMProtectDecryptStringA("new_hwid")] == false) {
-						MessageBox(NULL, VMProtectDecryptStringA("incorrect hwid!"), VMProtectDecryptStringA("login"), MB_OK);
-						exit(0);
-					}
-
-				}
-				else if (j[VMProtectDecryptStringA("success")] == false) {
-					MessageBox(NULL, VMProtectDecryptStringA("incorrect credentials!"), VMProtectDecryptStringA("login"), MB_OK);
-					exit(0);
+				catch (const std::exception& e) {				
+					std::cerr << e.what() << std::endl;
 				}
 
 			}
 
 		} while (!settings::login_passed);
+
 		VMProtectEnd();
 	}
 
-	auto render_menu()->void {
+	auto render_loop()->void {
 
-		VMProtectBeginUltra(menu_function);
+		VMProtectBeginUltra("render_loop");
 
 		MSG msg;
 		ZeroMemory(&msg, sizeof(msg));
@@ -133,46 +97,32 @@ namespace app {
 
 	auto checksum_loop()-> void {
 
-		VMProtectBeginUltra(checksum_function);
+		VMProtectBeginUltra("checksum_loop");
 
-		TCHAR szExeFileName[MAX_PATH];
-		GetModuleFileName(NULL, szExeFileName, MAX_PATH);
+		try {
 
-		CryptoPP::SHA512 sha512;
-		const size_t size = CryptoPP::SHA512::DIGESTSIZE * 2;
-		byte buf[size] = { 0 };
-		std::string strPath = VMProtectDecryptStringA(szExeFileName);
-		CryptoPP::FileSource(
-			strPath.c_str(), true,
-			new CryptoPP::HashFilter(
-				sha512, new CryptoPP::HexEncoder(new CryptoPP::ArraySink(buf, size))));
-		std::string strHash = std::string(reinterpret_cast<const char*>(buf), size);
+			TCHAR szExeFileName[MAX_PATH];
+			GetModuleFileName(NULL, szExeFileName, MAX_PATH);
 
-		http::Response response;
+			CryptoPP::SHA512 sha512;
+			const size_t size = CryptoPP::SHA512::DIGESTSIZE * 2;
+			byte buf[size] = { 0 };
+			std::string strPath = VMProtectDecryptStringA(szExeFileName);
+			CryptoPP::FileSource(
+				strPath.c_str(), true,
+				new CryptoPP::HashFilter(
+					sha512, new CryptoPP::HexEncoder(new CryptoPP::ArraySink(buf, size))));
+			std::string strHash = std::string(reinterpret_cast<const char*>(buf), size);
 
-		try
-		{
+			std::cout << strHash << std::endl;
 
-			http::Request request(VMProtectDecryptStringA("http://localhost/loader/checksum.php"));
-			// pass parameters as a map
-			std::map<std::string, std::string> parameters = { {VMProtectDecryptStringA("hash"), VMProtectDecryptStringA(strHash.c_str())} };
-			response = request.send("POST", parameters, {
-				"Content-Type: application/x-www-form-urlencoded"
-				});
+			std::unique_ptr<Checksum_WebRequest> res{ new Checksum_WebRequest(strHash) };
+
+			res->check_hash();
 
 		}
-		catch (const std::exception& e)
-		{
-			std::cerr << "Request failed, error: " << e.what() << '\n';
-		}
-
-		json j = json::parse(response.body.begin(), response.body.end());
-
-		std::cout << j << std::endl;
-
-		if (j[VMProtectDecryptStringA("success")] == false) {
-			MessageBox(NULL, VMProtectDecryptStringA("Outdated Version, Please download the newest version on the website!"), VMProtectDecryptStringA("checksum error"), MB_OK);
-			exit(0);
+		catch (const std::exception& e) {		
+			std::cerr << e.what() << std::endl;
 		}
 
 		VMProtectEnd();
@@ -181,7 +131,7 @@ namespace app {
 
 	auto random_filename()-> void {
 
-		VMProtectBeginUltra(rename_filename);
+		VMProtectBeginUltra("random_filename");
 
 		TCHAR szExeFileName[MAX_PATH];
 		GetModuleFileName(NULL, szExeFileName, MAX_PATH);
@@ -197,7 +147,7 @@ namespace app {
 
 	auto load_driver()-> int {
 
-		VMProtectBeginUltra(inject_protect);
+		VMProtectBeginUltra("load_driver");
 
 		const std::string driver_path = "C:\\Users\\Trix\\Desktop\\Rust Build\\kernelmode.sys";
 

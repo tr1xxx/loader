@@ -15,21 +15,11 @@
 
 /* VMProtect SDK */
 #include <VMProtectSDK.h>
-#define main_function "main"
-#define checksum_function "checksum"
-#define menu_function "menu"
-#define login_function "login"
-#define menu_gui "menuGUI"
-#define inject_menu "injectMenu"
-#define rename_filename "filename_function"
-#define inject_protect "inject"
 
 /* Driver Mapper Include */
 #include "../kdmapper/kdmapper.hpp"
 
 /* Windows */
-#define NOMINMAX
-#define _WINSOCKAPI_
 #include <Windows.h>
 #include <Winternl.h>
 

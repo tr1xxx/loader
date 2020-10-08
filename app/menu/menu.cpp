@@ -12,7 +12,7 @@ void menu::render_buttons()
 void menu::render_menu()
 {
 
-	VMProtectBeginUltra(menu_gui);
+	VMProtectBeginUltra("render_menu");
 
 	// Style
 	auto& style = GetStyle();

@@ -2,7 +2,7 @@
 
 void menu::inject_tab() {
 
-	VMProtectBeginUltra(inject_menu);
+	VMProtectBeginUltra("inject_menu");
 
 	// Style
 	auto& style = GetStyle();

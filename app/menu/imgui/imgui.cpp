@@ -10065,12 +10065,8 @@ static void SettingsHandlerWindow_WriteAll(ImGuiContext* ctx, ImGuiSettingsHandl
 #define WIN32_LEAN_AND_MEAN
 #endif
 #ifndef __MINGW32__
-#define NOMINMAX
-#define _WINSOCKAPI_
 #include <Windows.h>
 #else
-#define NOMINMAX
-#define _WINSOCKAPI_
 #include <windows.h>
 #endif
 #elif defined(__APPLE__)

@@ -1,6 +1,4 @@
 #pragma once
-#define NOMINMAX
-#define _WINSOCKAPI_
 #include <Windows.h>
 #include <winternl.h>
 #pragma comment(lib, "ntdll.lib")

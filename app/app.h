@@ -1,5 +1,6 @@
 #pragma once
 #include "../security/includes.h"
+#include "WebRequests/web.h"
 
 namespace app {
 
@@ -7,7 +8,7 @@ namespace app {
 	std::string random_string();
 
 	auto login_loop()-> void;
-	auto render_menu()-> void;
+	auto render_loop()-> void;
 	auto antidbg_loop()-> void;
 	auto checksum_loop()-> void;
 	auto random_filename()-> void;
