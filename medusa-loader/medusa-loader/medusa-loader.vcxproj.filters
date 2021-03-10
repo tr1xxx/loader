@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="security\hardware.cpp">
+      <Filter>security</Filter>
+    </ClCompile>
+    <ClCompile Include="kdmapper\intel_driver.cpp">
+      <Filter>kdmapper</Filter>
+    </ClCompile>
+    <ClCompile Include="kdmapper\kdmapper.cpp">
+      <Filter>kdmapper</Filter>
+    </ClCompile>
+    <ClCompile Include="kdmapper\portable_executable.cpp">
+      <Filter>kdmapper</Filter>
+    </ClCompile>
+    <ClCompile Include="kdmapper\service.cpp">
+      <Filter>kdmapper</Filter>
+    </ClCompile>
+    <ClCompile Include="kdmapper\utils.cpp">
+      <Filter>kdmapper</Filter>
+    </ClCompile>
+    <ClCompile Include="app\app.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="app\WebRequests\web.cpp">
+      <Filter>app\WebRequests</Filter>
+    </ClCompile>
+    <ClCompile Include="app\menu\gui.cpp">
+      <Filter>app\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="app\menu\menu.cpp">
+      <Filter>app\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="app\menu\settings.cpp">
+      <Filter>app\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="app\menu\imgui\imgui.cpp">
+      <Filter>app\menu\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="app\menu\imgui\imgui_draw.cpp">
+      <Filter>app\menu\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="app\menu\imgui\imgui_impl_dx11.cpp">
+      <Filter>app\menu\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="app\menu\imgui\imgui_impl_win32.cpp">
+      <Filter>app\menu\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="app\menu\imgui\imgui_widgets.cpp">
+      <Filter>app\menu\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="app\menu\tabs\inject_tab.cpp">
+      <Filter>app\menu\tabs</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="app">
+      <UniqueIdentifier>{668e1a55-bd66-430b-b79b-7b20e133a848}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="kdmapper">
+      <UniqueIdentifier>{92f4c24b-e411-44ca-b3c4-1095cab1266e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="security">
+      <UniqueIdentifier>{2268b443-c0c6-45d0-8329-65ba7af872dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app\http">
+      <UniqueIdentifier>{d0b9c746-252f-4d8c-b5f1-d8f093a49c6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app\json">
+      <UniqueIdentifier>{18596f28-cde3-4aed-a850-2d7513d8a6d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app\menu">
+      <UniqueIdentifier>{e0d4a53f-8454-4abb-9b66-aabe242bd918}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app\WebRequests">
+      <UniqueIdentifier>{08e024ba-bc74-4416-ac21-75ea86a0ffbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app\menu\imgui">
+      <UniqueIdentifier>{ef78eeec-d44d-46a1-b636-1eb08b4c37a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app\menu\tabs">
+      <UniqueIdentifier>{f290cc84-7d09-4c2f-af7a-e1062dd6ed1b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="security\hardware.h">
+      <Filter>security</Filter>
+    </ClInclude>
+    <ClInclude Include="security\includes.h">
+      <Filter>security</Filter>
+    </ClInclude>
+    <ClInclude Include="kdmapper\intel_driver.hpp">
+      <Filter>kdmapper</Filter>
+    </ClInclude>
+    <ClInclude Include="kdmapper\intel_driver_resource.hpp">
+      <Filter>kdmapper</Filter>
+    </ClInclude>
+    <ClInclude Include="kdmapper\kdmapper.hpp">
+      <Filter>kdmapper</Filter>
+    </ClInclude>
+    <ClInclude Include="kdmapper\nt.hpp">
+      <Filter>kdmapper</Filter>
+    </ClInclude>
+    <ClInclude Include="kdmapper\portable_executable.hpp">
+      <Filter>kdmapper</Filter>
+    </ClInclude>
+    <ClInclude Include="kdmapper\service.hpp">
+      <Filter>kdmapper</Filter>
+    </ClInclude>
+    <ClInclude Include="kdmapper\utils.hpp">
+      <Filter>kdmapper</Filter>
+    </ClInclude>
+    <ClInclude Include="app\app.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="app\WebRequests\web.h">
+      <Filter>app\WebRequests</Filter>
+    </ClInclude>
+    <ClInclude Include="app\http\http.hpp">
+      <Filter>app\http</Filter>
+    </ClInclude>
+    <ClInclude Include="app\json\json.hpp">
+      <Filter>app\json</Filter>
+    </ClInclude>
+    <ClInclude Include="app\menu\color.h">
+      <Filter>app\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="app\menu\menu.h">
+      <Filter>app\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="app\menu\settings.h">
+      <Filter>app\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="app\menu\imgui\imgui.h">
+      <Filter>app\menu\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="app\menu\imgui\imgui_impl_dx11.h">
+      <Filter>app\menu\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="app\menu\imgui\imgui_impl_win32.h">
+      <Filter>app\menu\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="app\menu\imgui\imgui_internal.h">
+      <Filter>app\menu\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="app\menu\imgui\imstb_rectpack.h">
+      <Filter>app\menu\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="app\menu\imgui\imstb_textedit.h">
+      <Filter>app\menu\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="app\menu\imgui\imstb_truetype.h">
+      <Filter>app\menu\imgui</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -8,10 +8,10 @@
 #include <random>
 
 /* cryptopp */
-#include <cryptopp/dll.h>
-#include <cryptopp/sha.h>
-#include <cryptopp/files.h>
-#include <cryptopp/hex.h>
+#include <dll.h>
+#include <sha.h>
+#include <files.h>
+#include <hex.h>
 
 /* VMProtect SDK */
 #include <VMProtectSDK.h>

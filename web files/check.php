@@ -23,7 +23,7 @@
         'other_groups' => '',
     ];
 
-    $json = json_decode($data, true);
+    $json = json_decode(json_encode($data, true));
 
     if ($username != $res['username'] || !password_verify($password, $res['password'])) {
         $json['success'] = false;
